@@ -2,8 +2,11 @@ import express, { Request } from 'express';
 import { testLLM } from './src/functions/test-llm.js';
 import { HumanMessage } from '@langchain/core/messages';
 import { graph } from './src/functions/chat-state.js';
+import { updatedDocument } from './src/functions/updated-document.js';
+import "./src/config/rag-config.js"
 
 const app = express();
+app.use(express.json());
 const port: number = 3000;
 
 app.get('/', (req: Request, res: any) => {
@@ -40,11 +43,23 @@ app.post("/chat", async (req, res) => {
     }
 })
 
-app.post("/ai-agent", async () => {
+app.post("/ai-agent", async (req, res) => {
     try {
         
     } catch (error) {
         console.log("Error AI agent")
+    }
+})
+
+app.post("/updated-document", async (req, res) => {
+    try {
+        const resp = await updatedDocument(req.body?.message)
+        return res.json({
+            answer: resp?.answer,
+            context: resp?.context,
+          });
+    } catch (error) {
+        console.log("Error updated docment", error)
     }
 })
 app.listen(port, () => {
