@@ -40,6 +40,13 @@ app.post("/chat", async (req, res) => {
     }
 })
 
+app.post("/ai-agent", async () => {
+    try {
+        
+    } catch (error) {
+        console.log("Error AI agent")
+    }
+})
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
 });
